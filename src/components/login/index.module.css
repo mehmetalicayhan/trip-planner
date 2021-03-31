@@ -1,0 +1,56 @@
+.authContainer {
+    @apply
+    flex
+    h-screen
+    items-center
+}
+
+.logoSide {
+    @apply
+    hidden
+    sm:block
+    bg-red-400
+    w-3/4
+    h-full
+}
+
+.loginCard {
+    @apply
+    w-full
+    sm:w-2/3
+    p-20
+    justify-center
+    items-center
+}
+
+.formRow {
+    @apply
+    flex flex-col
+    mt-5
+}
+
+label {
+    @apply mb-2
+}
+
+input[type="email"],
+input[type="password"] {
+    @apply w-full sm:w-2/3 border p-3 rounded border-gray-300 outline-none placeholder-gray-400 focus:border-red-200 text-sm
+
+}
+
+.details{
+    @apply flex justify-between sm:w-2/3 w-full
+}
+
+.loginButton {
+    @apply
+    sm:w-1/3
+    w-full
+    rounded
+    bg-red-400
+    text-white
+    py-3
+    px-2
+    text-sm
+}
