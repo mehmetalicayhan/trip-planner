@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import styles from "../login/index.module.css";
 import axios from "axios";
+import TravelImage from "../login/travel.jpeg";
 
 class Register extends Component {
     constructor(props) {
@@ -47,6 +48,8 @@ class Register extends Component {
         return (
             <div className={styles.authContainer}>
                 <div className={styles.logoSide}>
+                    <img src={TravelImage} className="h-full w-full" alt=""/>
+
                 </div>
                 <div className={styles.loginCard}>
                     <form onSubmit={this.handleSubmit}>

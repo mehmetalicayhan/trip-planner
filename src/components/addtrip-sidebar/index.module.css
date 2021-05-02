@@ -1,0 +1,15 @@
+.form {
+    @apply flex flex-col  justify-center w-full p-5
+}
+
+.row {
+    @apply flex flex-col  justify-center mb-4
+}
+
+.input {
+    @apply p-2 border border-custom-gray rounded outline-none focus:border-dark-green
+}
+
+.saveButton {
+    @apply justify-self-center bg-dark-blue text-white px-4 py-2 rounded-full self-center my-2 transition duration-500 ease-in-out hover:text-dark-green hover:bg-light-blue transform hover:-translate-y-1 hover:scale-105
+}

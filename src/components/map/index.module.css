@@ -1,0 +1,7 @@
+.mapContainer {
+   @apply w-full h-full
+}
+
+.sidebar {
+    @apply px-3 py-6 bg-blue-400 m-4 rounded z-10
+}

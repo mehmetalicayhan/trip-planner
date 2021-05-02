@@ -1,0 +1,19 @@
+.wrapper{
+    @apply
+    flex flex-col
+}
+
+.navbar{
+    @apply
+    bg-dark-green h-12 flex items-center
+}
+
+.logo{
+    @apply
+    mx-2 my-1 h-10
+}
+
+.search{
+    @apply
+    w-1/6 h-8 border p-3 rounded border-gray-300 outline-none placeholder-gray-400 mx-2
+}

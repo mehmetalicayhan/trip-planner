@@ -1,0 +1,15 @@
+.stepList{
+    @apply flex flex-col justify-center p-3
+}
+
+.listItem{
+    @apply w-6 h-6 border-4 border-dark-green rounded-full p-4 m-2 flex justify-center items-center
+}
+
+.stepBody{
+    @apply flex justify-start items-start
+}
+
+.stepCard{
+    @apply m-2 p-4 border border-dark-green rounded
+}

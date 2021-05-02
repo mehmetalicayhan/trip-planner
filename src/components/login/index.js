@@ -2,7 +2,7 @@ import React, {Component} from "react";
 
 import {connect} from "react-redux";
 import {login, logout} from "../../actions/authAction";
-
+import TravelImage from "./travel.jpeg";
 import styles from "./index.module.css";
 
 class Login extends Component {
@@ -36,6 +36,7 @@ class Login extends Component {
         return (
             <div className={styles.authContainer}>
                 <div className={styles.logoSide}>
+                    <img src={TravelImage} className="h-auto" alt=""/>
                 </div>
                 <div className={styles.loginCard}>
                     <form onSubmit={this.handleSubmit}>
@@ -45,6 +46,7 @@ class Login extends Component {
                                 name="email"
                                 placeholder="Email Adresinizi Giriniz"
                                 type="text"
+                                className={styles.authInput}
                                 value={this.state.email}
                                 onChange={this.handleChange}
                             />
@@ -55,6 +57,7 @@ class Login extends Component {
                                 name="password"
                                 placeholder="Parolanızı Giriniz"
                                 type="password"
+                                className={styles.authInput}
                                 value={this.state.password}
                                 onChange={this.handleChange}
                             />

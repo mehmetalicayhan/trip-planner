@@ -33,9 +33,7 @@ label {
     @apply mb-2
 }
 
-input[type="email"],
-input[type="password"],
-input[type="text"] {
+.authInput {
     @apply w-full sm:w-2/3 border p-3 rounded border-gray-300 outline-none placeholder-gray-400 focus:border-red-200 text-sm
 
 }
