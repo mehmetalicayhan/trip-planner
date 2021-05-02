@@ -2,8 +2,10 @@
     @apply flex flex-col justify-center p-3
 }
 
+
 .listItem{
-    @apply w-6 h-6 border-4 border-dark-green rounded-full p-4 m-2 flex justify-center items-center
+    @apply w-6 h-6 border-4 border-dark-green rounded-full p-4 m-2 flex justify-center items-center cursor-pointer transition duration-500 ease-in-out hover:text-white hover:bg-dark-green transform  hover:-translate-y-1 hover:scale-110
+
 }
 
 .stepBody{

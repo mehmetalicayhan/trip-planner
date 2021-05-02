@@ -6,7 +6,8 @@
 
 
 .followerButton{
-@apply text-xs bg-custom-gray mx-1 rounded-full px-3 py-2 mx-4 mb-2 outline-none
+    @apply bg-custom-gray text-xs px-3 py-2 rounded-full mx-4 mb-2 transition duration-500 ease-in-out hover:text-dark-green hover:bg-light-blue transform hover:-translate-y-1 hover:scale-105 hover:text-dark-green
+
 }
 
 .createTrip{
