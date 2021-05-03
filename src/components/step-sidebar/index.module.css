@@ -13,5 +13,5 @@
 }
 
 .stepCard{
-    @apply m-2 p-4 border border-dark-green rounded
+    @apply m-2 p-4 border border-dark-green rounded w-full
 }

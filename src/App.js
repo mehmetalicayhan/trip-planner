@@ -14,9 +14,7 @@ const App = (props) => {
                     <PrivateRoute exact path="/" component={() => <Main type={`Main`}/> }/>
                     <PrivateRoute exact path="/followers" component={() => <Main type={`Follower`}/> }/>
                     <PrivateRoute exact path="/add-trip" component={() => <Main type={`AddTrip`}/> }/>
-                    <PrivateRoute exact path="/step" component={() => <Main type={`Step`}/> }/>
-                    <PrivateRoute exact path="/step/:id" component={() => <Main type={`Step`}/> }/>
-
+                    <PrivateRoute exact path="/step/:id" component={(props) => <Main type={`Step`} {...props}/> }/>
                     <Route path="/account/login" component={Login}/>
                     <Route path="/account/register" component={Register}/>
                     <PrivateRoute path="/about" component={About}/>

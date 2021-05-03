@@ -19,45 +19,48 @@ class TravelCard extends Component {
     render() {
         return (
             <div>
-                <div className="bg-custom-gray flex flex-col mb-4 p-2">
-                    <div className="flex mx-2 items-center font-bold">
-                        <div>
-                            <img className="w-4 h-4 mr-2 text-dark-green" src={StartDateSVG} alt=""/>
-                        </div>
-                        <div className="text-dark-green">
-                            {new Date(this.props.trip.startDate).toLocaleDateString()}
-                        </div>
-                    </div>
-                    <div className="flex my-8">
-                        <img src={Travel} alt="" className="mx-2"/>
-                        <div className="flex flex-col">
-                            <h4 className="font-bold text-xl">{this.props.trip.name}</h4>
-                            <h4 className="italic text-sm text-dark-green mt-2">{this.props.trip.name}</h4>
-                        </div>
-                    </div>
-                    <div className="flex justify-between mx-2 font-bold">
-                        <div className="flex justify-center items-center">
-                            <img className="w-6 h-6 mr-1" src={DaysSVG} alt=""/>
-                            <div className="flex flex-col">
-                                <div className="m-0 p-0 text-m">13</div>
-                                <div className="m-0 p-0 text-xs">days</div>
+                <Link to={`/step/${this.props.trip.id}`}>
+                    <div className="bg-custom-gray hover:bg-light-blue cursor-pointer flex flex-col mb-4 p-2">
+                        <div className="flex mx-2 items-center font-bold">
+                            <div>
+                                <img className="w-4 h-4 mr-2 text-dark-green" src={StartDateSVG} alt=""/>
+                            </div>
+                            <div className="text-dark-green">
+                                {new Date(this.props.trip.startDate).toLocaleDateString()}
                             </div>
                         </div>
-                        <div className="flex justify-center items-center">
-                            <img className="w-6 h-6 mr-1" src={DistanceSVG} alt=""/>
+                        <div className="flex my-8">
+                            <img src={Travel} alt="" className="mx-2"/>
                             <div className="flex flex-col">
-                                <div className="m-0 p-0 text-m">1000</div>
-                                <div className="m-0 p-0 text-xs">km</div>
+                                <h4 className="font-bold text-xl">{this.props.trip.name}</h4>
+                                <h4 className="italic text-sm text-dark-green mt-2">{this.props.trip.name}</h4>
                             </div>
                         </div>
-                        <div className="flex justify-center items-center">
-                            <Link to={`/step/${this.props.trip.name}`} className="rounded-full bg-white outline-none w-6 h-6 flex justify-center items-center">
-                                <img src={ArrowSVG} alt=""/>
-                            </Link>
-                        </div>
+                        <div className="flex justify-between mx-2 font-bold">
+                            <div className="flex justify-center items-center">
+                                <img className="w-6 h-6 mr-1" src={DaysSVG} alt=""/>
+                                <div className="flex flex-col">
+                                    <div className="m-0 p-0 text-m">13</div>
+                                    <div className="m-0 p-0 text-xs">days</div>
+                                </div>
+                            </div>
+                            <div className="flex justify-center items-center">
+                                <img className="w-6 h-6 mr-1" src={DistanceSVG} alt=""/>
+                                <div className="flex flex-col">
+                                    <div className="m-0 p-0 text-m">1000</div>
+                                    <div className="m-0 p-0 text-xs">km</div>
+                                </div>
+                            </div>
+                            <div className="flex justify-center items-center">
+                                <div
+                                    className="rounded-full bg-white outline-none w-6 h-6 flex justify-center items-center">
+                                    <img src={ArrowSVG} alt=""/>
+                                </div>
+                            </div>
 
+                        </div>
                     </div>
-                </div>
+                </Link>
             </div>
         );
     }

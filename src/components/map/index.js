@@ -1,73 +1,119 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import mapboxgl from 'mapbox-gl/dist/mapbox-gl-csp';
-import {connect} from "react-redux";
+import "mapbox-gl/dist/mapbox-gl.css";
+import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
+import React, {useState, useRef, useCallback, useEffect} from "react";
+import axios from "axios";
+import MapGL, {Marker} from "react-map-gl";
+import Geocoder from "react-map-gl-geocoder";
+import Pin from "./Pin";
 
-// eslint-disable-next-line import/no-webpack-loader-syntax
-import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker';
-import styles from "./index.module.css";
+import {useDispatch} from "react-redux";
+import {setCoordinates} from "../../actions/mapAction"
+import MarkerSVG from "./marker2.svg";
+export const MAPBOX_TOKEN =
+    "pk.eyJ1IjoibWVobWV0YWxpY3lobm4iLCJhIjoiY2tucndzYWFwMGpkcDJ1cXQ1aWNldW9icSJ9.5Me5o9d5x1DUfGtYSipbiw";
 
-mapboxgl.workerClass = MapboxWorker;
-mapboxgl.accessToken = 'pk.eyJ1IjoibWVobWV0YWxpY3lobm4iLCJhIjoiY2tucndzYWFwMGpkcDJ1cXQ1aWNldW9icSJ9.5Me5o9d5x1DUfGtYSipbiw';
+const Map = () => {
+    const [viewport, setViewport] = useState({
+        latitude: 39.1667,
+        longitude: 35.6667,
+        zoom: 5
+    });
 
-class Map extends React.PureComponent {
-    constructor(props) {
-        super(props);
-        this.state = {
-            lng: 35.6667,
-            lat: 39.1667,
-            zoom: 5,
-        };
-        this.mapContainer = React.createRef();
+    const [markerLat, setMarkerLat] = useState(39.1667);
+    const [markerLong, setMarkerLong] = useState(35.6667);
+    const [steps, setSteps] = useState([]);
+
+    const dispatch = useDispatch();
+
+    const mapRef = useRef();
+    const handleViewportChange = useCallback(
+        (newViewport) => setViewport(newViewport),
+        []
+    );
+
+    const getAllSteps = () => {
+        axios.get(`https://trip-planner-mm.herokuapp.com/steps?tripId=12`).then((res) => {
+            setSteps(res.data)
+        })
+
     }
 
-    componentDidMount() {
-        const {lng, lat, zoom} = this.state;
-        const map = new mapboxgl.Map({
-            container: this.mapContainer.current,
-            style: 'mapbox://styles/mapbox/streets-v11',
-            center: [lng, lat],
-            zoom: zoom
-        });
-        console.log("State Takibi : ", this.props.creatable);
+    useEffect(() => {
+        getAllSteps();
+    });
+    // if you are happy with Geocoder default settings, you can just use handleViewportChange directly
+    const handleGeocoderViewportChange = useCallback(
+        (newViewport) => {
+            console.log(newViewport)
+            const geocoderDefaultOverrides = {transitionDuration: 1000};
 
-        const marker = new mapboxgl.Marker({
-            draggable: true
-        }).setLngLat([lng, lat])
-            .addTo(map);
-
-        map.on('move', () => {
-            this.setState({
-                lng: map.getCenter().lng.toFixed(4),
-                lat: map.getCenter().lat.toFixed(4),
-                zoom: map.getZoom().toFixed(2)
+            return handleViewportChange({
+                ...newViewport,
+                ...geocoderDefaultOverrides
             });
-        });
+        },
+        [handleViewportChange]
+    );
 
-        map.on('click', (m) => {
-            marker.setLngLat([m.lngLat.lng, m.lngLat.lat])
-            console.log(m);
-        });
+    const clicked = (e) => {
+        const lng = e.lngLat[0];
+        const lat = e.lngLat[1];
+
+        setMarkerLat(lat);
+        setMarkerLong(lng);
+
+
+        dispatch(setCoordinates(lat, lng));
+
+
+        /*const URL = `https://api.tiles.mapbox.com/v4/geocode/mapbox.places/${lng},${lat}.json?access_token=${MAPBOX_TOKEN}`;
+        axios.get(URL)
+            .then(res => {
+                console.log(res);
+            })
+*/
+
     }
 
+    return (
+        <div style={{height: "100vh"}}>
+            <MapGL
+                ref={mapRef}
+                {...viewport}
+                width="100%"
+                height="100%"
+                onViewportChange={handleViewportChange}
+                mapStyle="mapbox://styles/mapbox/streets-v11"
+                mapboxApiAccessToken={MAPBOX_TOKEN}
+                onNativeClick={(e) => clicked(e)}
+            >
+                {window.location.pathname === "/" &&
+                steps.map((step, key) => {
+                    return <Marker longitude={step.location.longitude} latitude={step.location.latitude}>
+                        <Pin size={20}/>
+                    </Marker>
+                })
+                }
 
-    /*componentWillReceiveProps(nextProps) {
-        if (nextProps.creatable) {
-            this.setState({isEditable: true});
-        }
-    }*/
+                <Marker
+                    longitude={markerLong}
+                    latitude={markerLat}
+                    draggable={true}
+                >
+                    <img width={26} height={26} src={MarkerSVG} alt=""/>
+                </Marker>
 
-    render() {
-        const {lng, lat, zoom} = this.state;
-        return (
+                <Geocoder
+                    mapRef={mapRef}
+                    reverseGeocode={true}
+                    onViewportChange={handleGeocoderViewportChange}
+                    mapboxApiAccessToken={MAPBOX_TOKEN}
+                    position="top-left"
 
-            <div ref={this.mapContainer} className={styles.mapContainer}/>
-        );
-    }
-}
+                />
+            </MapGL>
+        </div>
+    );
+};
 
-const mapStateToProps = (state) => ({
-    creatable: state.map.creatable,
-});
-
-export default connect(mapStateToProps, {})(Map);
+export default Map;

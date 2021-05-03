@@ -1,5 +1,7 @@
+
 export const OPEN_CREATABLE = "OPEN_CREATABLE";
 export const CLOSE_CREATABLE = "CLOSE_CREATABLE";
+export const UPDATE_COORDINATES = "UPDATE_COORDINATES";
 
 const openCreatable = () => {
     console.log("Mehmet")
@@ -15,8 +17,15 @@ const closeCreatable = () => {
     };
 };
 
+export const setCoordinates = (lat, lng) => {
+    return {
+        type: UPDATE_COORDINATES,
+        lat:lat,
+        lng:lng
+    };
+}
+
 export const open = () => {
-    console.log("tAYFUR")
 
     return dispatch => {
         dispatch(openCreatable())
@@ -26,6 +35,12 @@ export const open = () => {
 export const close = () => {
     return dispatch => {
         dispatch(closeCreatable())
+    }
+}
+
+export const updateCoordinates = (lat,lng) => {
+    return dispatch => {
+        dispatch(setCoordinates(lat,lng))
     }
 }
 

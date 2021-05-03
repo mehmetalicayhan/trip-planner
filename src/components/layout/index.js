@@ -28,7 +28,7 @@ const Index = (props) => (
                 <AddTripSidebar/>
                 }
                 {props.type==='Step' &&
-                <StepSidebar/>
+                <StepSidebar id={props.match.params.id}/>
                 }
             </div>
             <div className="sm:flex-auto none"><Map/></div>

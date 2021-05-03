@@ -1,7 +1,10 @@
-import { CLOSE_CREATABLE, OPEN_CREATABLE } from "../actions/mapAction";
+import {CLOSE_CREATABLE, OPEN_CREATABLE, UPDATE_COORDINATES} from "../actions/mapAction";
 
 const initState = {
-    creatable:false
+    creatable: false,
+
+    lat: 37.00,
+    lng: 35.00,
 }
 
 const mapReducer = (state = initState, action) => {
@@ -16,7 +19,13 @@ const mapReducer = (state = initState, action) => {
         case OPEN_CREATABLE:
             return {
                 ...state,
-               creatable: true,
+                creatable: true,
+            };
+        case UPDATE_COORDINATES:
+            return {
+                ...state,
+                lat: action.lat,
+                lng: action.lng
             };
         default:
             return state;

@@ -5,28 +5,34 @@ import BuildingSVG from "./buildings.svg";
 import Flag from "./bayrak.png";
 import axios from "axios";
 
+import {MAPBOX_TOKEN} from "../map";
+import {connect} from "react-redux";
+import {Redirect} from "react-router-dom";
+
 class StepSidebar extends Component {
+    //TODO: remove step and edit step order item
 
     state = {
         steps: [
-            {a: 1, b: 2},
-            {a: 1, b: 2},
-            {a: 1, b: 2},
-            {a: 1, b: 2},
-            {a: 1, b: 2},
-            {a: 1, b: 2},
         ],
         selectedItem: 0,
         isFormActive: false,
         stepName: "",
         stepOrder: 0,
+        location: {
+            countryCode: "",
+            detail: "",
+            fullDetail: "",
+            name: "",
+        },
         stepSummary: "",
-        stepStartDate: ""
-
+        stepStartDate: "",
+        redirect:false
     }
-    /*getAllTrips = async () => {
-        await axios.get("https://trip-planner-mm.herokuapp.com/trips").then((res) => {
-            this.setState({trips: res.data})
+
+    getAllSteps = async () => {
+        await axios.get(`https://trip-planner-mm.herokuapp.com/steps?tripId=${this.props.id}`).then((res) => {
+            this.setState({steps: res.data})
         })
             .catch((errors) => {
                 console.log(errors);
@@ -34,30 +40,10 @@ class StepSidebar extends Component {
     }
 
     componentDidMount() {
-        this.getAllTrips();
-    }*/
+        this.getAllSteps();
+    }
 
-    /*handleSubmit = async (e) => {
-        e.preventDefault();
-        const tripRequest = {
-            name: this.state.tripName,
-            summary: this.state.tripSummary,
-            startDate: this.state.tripStartDate,
-            endDate: this.state.tripEndDate,
-            privacyLevel: this.state.privacy,
-        };
-        await axios
-            .post(
-                "https://trip-planner-mm.herokuapp.com/trips",
-                tripRequest
-            )
-            .then(() => {
-            })
-            .catch((errors) => {
-                console.log(errors);
-            });
-    }; */
-    handleChange = e => {
+    handleChange = async e => {
         this.setState({
             [e.target.name]: e.target.value
         });
@@ -72,8 +58,69 @@ class StepSidebar extends Component {
             isFormActive: !prevState.isFormActive
         }));
     }
+    getPlaceNameByCoordinates = async () => {
+        const URL = `https://api.tiles.mapbox.com/v4/geocode/mapbox.places/${this.props.lng},${this.props.lat}.json?access_token=${MAPBOX_TOKEN}`;
+        const result = await axios.get(URL)
+        if (result.data.features) {
+            const feature = result.data.features;
+            console.log(feature)
+            this.setState(
+                {
+                location: {
+                    countryCode: feature[feature.length-1].properties.short_code,
+                    detail:feature[feature.length-2].place_name,
+                    fullDetail:feature[feature.length-1].place_name,
+                    name:feature[feature.length-1].place_name,
+                }
+                })
+
+
+        }
+
+    }
+
+
+    handleSubmit = async (e) => {
+        e.preventDefault();
+
+        await this.getPlaceNameByCoordinates();
+        const stepRequest = {
+            description: this.state.stepSummary,
+            name: this.state.stepName,
+            startDate: this.state.stepStartDate,
+            tripId: this.props.id,
+            location: {
+                countryCode: this.state.location.countryCode,
+                detail: this.state.location.detail,
+                fullDetail: this.state.location.fullDetail,
+                latitude: this.props.lat,
+                longitude: this.props.lng,
+                name: this.state.location.name,
+            }
+        };
+        await axios
+            .post(
+                "https://trip-planner-mm.herokuapp.com/steps",
+                stepRequest
+            )
+            .then(() => {
+                this.setState({redirect: true});
+            })
+            .catch((errors) => {
+                console.log(errors);
+            });
+
+        await this.getAllSteps();
+        this.setState({isFormActive:false})
+
+    };
+
 
     render() {
+       /* const redirect = this.state.redirect;
+        if (redirect) {
+            return <Redirect to="/" />
+        }*/
         return (
             <div>
                 <ul className={styles.stepList}>
@@ -94,14 +141,15 @@ class StepSidebar extends Component {
                                      className={styles.stepCard}>
                                     <div className="flex mb-2">
                                         <div className="mr-2"><img src={BuildingSVG} alt=""/></div>
-                                        <div>City</div>
+                                        <div>{step.location.detail}</div>
                                     </div>
                                     <div className="flex mb-2 items-center">
-                                        <div className="mr-2"><img src={Flag} alt=""/></div>
-                                        <div>15/05/2021</div>
+                                        <div className="mr-2">
+                                            <img src={`https://www.countryflags.io/${step.location.countryCode}/flat/32.png`} alt={step.location.detail}/>
+                                        </div>
+                                        <div>{new Date(step.startDate).toLocaleDateString()}</div>
                                     </div>
-                                    <div className="text-sm italic">lorem ipsum dolor sit amet lorem ipsum dolor sit
-                                        ametlorem ipsum dolor sit ametlorem ipsum dolor sit amet
+                                    <div className="text-sm italic">{step.description}
                                     </div>
                                 </div>
                             </div>
@@ -165,7 +213,7 @@ class StepSidebar extends Component {
                                             className={formStyles.input}
                                             placeholder="Location"
                                             type="text"
-                                            value={this.state.location}
+                                            value={`${this.props.lat.toFixed(3)} , ${this.props.lng.toFixed(3)}`}
                                             onChange={this.handleChange}
 
                                         />
@@ -180,7 +228,6 @@ class StepSidebar extends Component {
                                             value={this.state.stepStartDate}
                                             onChange={this.handleChange}
 
-
                                         />
                                     </div>
 
@@ -193,10 +240,17 @@ class StepSidebar extends Component {
                         </div>
                     </li>
                 </ul>
-
             </div>
         );
     }
 }
 
-export default StepSidebar;
+const mapStateToProps = state => {
+    const {lat, lng} = state.map;
+    return {
+        lat, lng
+    }
+}
+
+export default connect(mapStateToProps)(StepSidebar);
+
