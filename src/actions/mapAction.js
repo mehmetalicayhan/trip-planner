@@ -4,7 +4,6 @@ export const CLOSE_CREATABLE = "CLOSE_CREATABLE";
 export const UPDATE_COORDINATES = "UPDATE_COORDINATES";
 
 const openCreatable = () => {
-    console.log("Mehmet")
     return {
         type: OPEN_CREATABLE,
 

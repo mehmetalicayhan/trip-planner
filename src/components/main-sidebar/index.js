@@ -7,7 +7,8 @@ import axios from "axios";
 
 class MainSidebar extends Component {
     state = {
-        trips: []
+        trips: [],
+        user:{}
     }
 
     getAllTrips = async () => {
@@ -21,6 +22,7 @@ class MainSidebar extends Component {
 
     componentDidMount() {
         this.getAllTrips();
+        this.setState({user:JSON.parse(localStorage.getItem("user"))});
     }
 
     render() {
@@ -31,7 +33,7 @@ class MainSidebar extends Component {
                         <img src={ProfilePhoto} alt=""/>
                     </div>
                     <div className="mb-4 mt-2 text-white font-bold text-lg">
-                        Mehmet Ali Çayhan
+                        {this.state.user.firstName +" "+ this.state.user.lastName}
                     </div>
                     <div className="flex justify-around mt-4">
                         <button className={styles.followerButton}>100 FOLLOWERS</button>

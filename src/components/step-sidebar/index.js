@@ -63,7 +63,6 @@ class StepSidebar extends Component {
         const result = await axios.get(URL)
         if (result.data.features) {
             const feature = result.data.features;
-            console.log(feature)
             this.setState(
                 {
                 location: {
