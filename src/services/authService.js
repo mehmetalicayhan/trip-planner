@@ -22,7 +22,9 @@ const login = (email, password) => {
 
 const logout = () => {
     localStorage.removeItem("jwtToken");
+    localStorage.removeItem("user");
     setAuthorizationToken(false);
+    window.location = "/account/login"
 }
 
 export default { login, logout };

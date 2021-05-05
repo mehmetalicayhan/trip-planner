@@ -4,7 +4,6 @@ import Login from './components/login';
 import Register from "./components/register";
 import Main from './components/layout';
 import PrivateRoute from './components/PrivateRoute';
-import About from './components/About';
 
 const App = (props) => {
     return (
@@ -17,7 +16,6 @@ const App = (props) => {
                     <PrivateRoute exact path="/step/:id" component={(props) => <Main type={`Step`} {...props}/> }/>
                     <Route path="/account/login" component={Login}/>
                     <Route path="/account/register" component={Register}/>
-                    <PrivateRoute path="/about" component={About}/>
                 </Switch>
             </div>
         </Router>

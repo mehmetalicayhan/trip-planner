@@ -2,19 +2,18 @@ import React, {Component} from 'react';
 import styles from "./index.module.css";
 import formStyles from "../addtrip-sidebar/index.module.css";
 import BuildingSVG from "./buildings.svg";
-import Flag from "./bayrak.png";
 import axios from "axios";
 
 import {MAPBOX_TOKEN} from "../map";
 import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
+import DeleteSVG from "./delete.svg";
 
 class StepSidebar extends Component {
     //TODO: remove step and edit step order item
 
     state = {
-        steps: [
-        ],
+        steps: [],
         selectedItem: 0,
         isFormActive: false,
         stepName: "",
@@ -27,7 +26,7 @@ class StepSidebar extends Component {
         },
         stepSummary: "",
         stepStartDate: "",
-        redirect:false
+        redirect: false
     }
 
     getAllSteps = async () => {
@@ -65,12 +64,12 @@ class StepSidebar extends Component {
             const feature = result.data.features;
             this.setState(
                 {
-                location: {
-                    countryCode: feature[feature.length-1].properties.short_code,
-                    detail:feature[feature.length-2].place_name,
-                    fullDetail:feature[feature.length-1].place_name,
-                    name:feature[feature.length-1].place_name,
-                }
+                    location: {
+                        countryCode: feature[feature.length - 1].properties.short_code,
+                        detail: feature[feature.length - 2].place_name,
+                        fullDetail: feature[feature.length - 1].place_name,
+                        name: feature[feature.length - 1].place_name,
+                    }
                 })
 
 
@@ -79,6 +78,13 @@ class StepSidebar extends Component {
     }
 
 
+    remove = async (id) => {
+
+        console.log(id);
+        const result = await axios.delete(`https://trip-planner-mm.herokuapp.com/steps/${id}`);
+        if (result)
+            await this.getAllSteps();
+    }
     handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -110,16 +116,16 @@ class StepSidebar extends Component {
             });
 
         await this.getAllSteps();
-        this.setState({isFormActive:false})
+        this.setState({isFormActive: false})
 
     };
 
 
     render() {
-       /* const redirect = this.state.redirect;
-        if (redirect) {
-            return <Redirect to="/" />
-        }*/
+        /* const redirect = this.state.redirect;
+         if (redirect) {
+             return <Redirect to="/" />
+         }*/
         return (
             <div>
                 <ul className={styles.stepList}>
@@ -138,13 +144,19 @@ class StepSidebar extends Component {
                                 </div>
                                 <div style={{display: this.state.selectedItem !== index && "none"}}
                                      className={styles.stepCard}>
-                                    <div className="flex mb-2">
-                                        <div className="mr-2"><img src={BuildingSVG} alt=""/></div>
-                                        <div>{step.location.detail}</div>
+                                    <div className="flex justify-between mb-2">
+                                        <div className="flex">
+                                            <div className="mr-2"><img src={BuildingSVG} alt=""/></div>
+                                            <div>{step.location.detail}</div>
+                                        </div>
+                                        <button className="outline-none" onClick={() => this.remove(step.id)}>
+                                            <img src={DeleteSVG} width={16} height={16} alt=""/></button>
                                     </div>
                                     <div className="flex mb-2 items-center">
                                         <div className="mr-2">
-                                            <img src={`https://www.countryflags.io/${step.location.countryCode}/flat/32.png`} alt={step.location.detail}/>
+                                            <img
+                                                src={`https://www.countryflags.io/${step.location.countryCode}/flat/32.png`}
+                                                alt={step.location.detail}/>
                                         </div>
                                         <div>{new Date(step.startDate).toLocaleDateString()}</div>
                                     </div>

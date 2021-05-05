@@ -31,7 +31,7 @@ class Register extends Component {
                 registerRequest
             )
             .then(() => {
-                this.props.history.push("/login");
+                this.props.history.push("account/login/");
             })
             .catch((errors) => {
                 console.log(errors);
@@ -59,6 +59,7 @@ class Register extends Component {
                                 name="firstName"
                                 placeholder="Adınızı Giriniz."
                                 type="text"
+                                className={styles.authInput}
                                 value={this.state.firstName}
                                 onChange={this.handleChange}
                             />
@@ -69,6 +70,7 @@ class Register extends Component {
                                 name="lastName"
                                 placeholder="Soyadınızı giriniz"
                                 type="text"
+                                className={styles.authInput}
                                 value={this.state.lastName}
                                 onChange={this.handleChange}
 
@@ -80,6 +82,7 @@ class Register extends Component {
                                 name="userName"
                                 placeholder="Kullanıcı adınızı giriniz"
                                 type="text"
+                                className={styles.authInput}
                                 value={this.state.userName}
                                 onChange={this.handleChange}
 
@@ -91,6 +94,7 @@ class Register extends Component {
                                 name="email"
                                 placeholder="Email Adresinizi Giriniz"
                                 type="email"
+                                className={styles.authInput}
                                 value={this.state.email}
                                 onChange={this.handleChange}
 
@@ -103,6 +107,7 @@ class Register extends Component {
                                 name="password"
                                 placeholder="Parolanızı Giriniz"
                                 type="password"
+                                className={styles.authInput}
                                 value={this.state.password}
                                 onChange={this.handleChange}
 
