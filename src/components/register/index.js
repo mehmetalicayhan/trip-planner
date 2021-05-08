@@ -31,7 +31,7 @@ class Register extends Component {
                 registerRequest
             )
             .then(() => {
-                this.props.history.push("account/login/");
+                this.props.history.push("login/");
             })
             .catch((errors) => {
                 console.log(errors);

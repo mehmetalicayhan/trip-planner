@@ -79,8 +79,6 @@ class StepSidebar extends Component {
 
 
     remove = async (id) => {
-
-        console.log(id);
         const result = await axios.delete(`https://trip-planner-mm.herokuapp.com/steps/${id}`);
         if (result)
             await this.getAllSteps();
