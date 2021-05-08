@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import { CanvasOverlay } from 'react-map-gl'
 
 export default class PolylineOverlay extends PureComponent {
-    _redraw ({ width, height, ctx, isDragging, project, unproject }) {
+    _redraw ({ width, height, ctx, isDragging, project }) {
         const { points, color, lineWidth = 2, renderWhileDragging = true } = this.props
         ctx.clearRect(0, 0, width, height)
         ctx.globalCompositeOperation = 'destination-over'
