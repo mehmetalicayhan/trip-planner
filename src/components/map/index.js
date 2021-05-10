@@ -105,13 +105,13 @@ const Map = () => {
                     <Popup
                         tipSize={5}
                         anchor="top"
-                        longitude={popupInfo.longitude}
-                        latitude={popupInfo.latitude}
+                        longitude={popupInfo.location.longitude}
+                        latitude={popupInfo.location.latitude}
                         closeOnClick={false}
                         onClose={setPopupInfo}
                         className="z-30 w-1/3"
                     >
-                        <BlogPopup/>
+                        <BlogPopup step={popupInfo}/>
                     </Popup>
                 )}
 
