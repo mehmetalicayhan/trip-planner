@@ -2,13 +2,32 @@ import TravelJPG from "./travel.jpeg";
 import {Link} from "react-router-dom";
 import formStyles from "../../addtrip-sidebar/index.module.css";
 import React, {useState} from "react";
+import firebase from "../../../firebase";
 
 const BlogPopup = (props) => {
 
     const [blogName, setBlogName] = useState("");
     const [title, setTitle] = useState("");
     const [summary, setSummary] = useState("");
-    const [image, setImage] = useState("");
+    const [image, setImage] = useState(null);
+    const [progress, setProgress] = useState(0);
+
+    const addImagesToDb = () => {
+        console.log(image)
+        if (image) {
+            for (let i = 0; i < image.length; ++i) {
+                const item = image.item(i);
+                let bucketName = `/images/${props.step.id}`;
+                let storageRef = firebase.storage().ref(`${bucketName}/${item.name}`);
+                const uploadTask = storageRef.put(item);
+                uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, (snapshot) => {
+                    const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes)) * 100
+                    setProgress(progress)
+                })
+            }
+        }
+    }
+
 
 
     return (
@@ -49,15 +68,19 @@ const BlogPopup = (props) => {
                     </div>
                     <div className={formStyles.row}>
                         <label htmlFor="blogImage">Blog Image</label>
-                        <input
-                            name="blogImage"
-                            className={formStyles.input}
-                            placeholder="Blog Image"
-                            type="file"
-                            value={image}
-                            onChange={e => setImage(e.target.value)}
+                        <div className="flex justify-center">
+                            <input
+                                name="blogImage"
+                                className={formStyles.input}
+                                placeholder="Blog Image"
+                                type="file"
+                                onChange={e => setImage(e.target.files)}
+                                multiple={true}
 
-                        />
+                            />
+                            <button onClick={addImagesToDb} className="rounded bg-dark-blue text-white">Save</button>
+                        </div>
+                        <progress value={progress} className="w-full"/>
                     </div>
 
                     <div className={formStyles.row}>
