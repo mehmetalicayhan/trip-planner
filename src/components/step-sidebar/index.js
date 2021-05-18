@@ -26,12 +26,25 @@ class StepSidebar extends Component {
         },
         stepSummary: "",
         stepStartDate: "",
-        redirect: false
+        redirect: false,
+        isMyProfile: false
     }
 
     getAllSteps = async () => {
-        await axios.get(`https://trip-planner-mm.herokuapp.com/steps?tripId=${this.props.id}`).then((res) => {
+        await axios.get(`https://trip-planner-mm.herokuapp.com/steps?tripId=${this.props.tripId}`).then((res) => {
             this.setState({steps: res.data})
+        })
+            .catch((errors) => {
+                console.log(errors);
+            });
+    }
+    checkUser = () => {
+        axios.get(`https://trip-planner-mm.herokuapp.com/users/${this.props.userId}`).then((res) => {
+            this.setState({user: res.data})
+            const localStorageUserId = JSON.parse(localStorage.getItem("user")).id;
+            if (localStorageUserId === res.data.id) {
+                this.setState({isMyProfile: true})
+            }
         })
             .catch((errors) => {
                 console.log(errors);
@@ -40,6 +53,8 @@ class StepSidebar extends Component {
 
     componentDidMount() {
         this.getAllSteps();
+
+        this.checkUser();
     }
 
     handleChange = async e => {
@@ -91,7 +106,7 @@ class StepSidebar extends Component {
             description: this.state.stepSummary,
             name: this.state.stepName,
             startDate: this.state.stepStartDate,
-            tripId: this.props.id,
+            tripId: this.props.tripId,
             location: {
                 countryCode: this.state.location.countryCode,
                 detail: this.state.location.detail,
@@ -165,7 +180,7 @@ class StepSidebar extends Component {
                         </li>
 
                     })}
-                    <li>
+                    {this.state.isMyProfile && <li>
                         <div className={styles.stepBody}>
                             <div
                                 className={styles.listItem}
@@ -248,6 +263,7 @@ class StepSidebar extends Component {
                             </div>
                         </div>
                     </li>
+                    }
                 </ul>
             </div>
         );

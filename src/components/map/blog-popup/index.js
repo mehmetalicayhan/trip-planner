@@ -1,8 +1,9 @@
 import TravelJPG from "./travel.jpeg";
 import {Link} from "react-router-dom";
 import formStyles from "../../addtrip-sidebar/index.module.css";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import firebase from "../../../firebase";
+import axios from "axios";
 
 const BlogPopup = (props) => {
 
@@ -13,7 +14,6 @@ const BlogPopup = (props) => {
     const [progress, setProgress] = useState(0);
 
     const addImagesToDb = () => {
-        console.log(image)
         if (image) {
             for (let i = 0; i < image.length; ++i) {
                 const item = image.item(i);
@@ -29,11 +29,11 @@ const BlogPopup = (props) => {
     }
 
 
-
     return (
         <div>
             {!props.step.blogAvailable && (
                 <div className="px-2 py-3 flex flex-col">
+
                     <div className="my-1 font-bold">{props.step.name}</div>
                     <div className="italic my-1 text-sm text-dark-green">{props.step.description}</div>
                     <img src={TravelJPG} alt="TravelImage"/>
@@ -43,7 +43,10 @@ const BlogPopup = (props) => {
                 </div>
             )}
 
-            {props.step.blogAvailable && (
+            {(props.step.blogAvailable && !props.isMyProfile) &&(
+                <div>Blog not found</div>
+            )}
+            {(props.step.blogAvailable && props.isMyProfile) && (
                 <div className="flex flex-col">
                     <div className={formStyles.row}>
                         <label htmlFor="blogName">Blog Name</label>

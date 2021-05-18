@@ -6,7 +6,7 @@
 
 
 .followerButton{
-    @apply bg-custom-gray text-xs px-3 py-2 rounded-full mx-4 mb-2 transition duration-500 ease-in-out hover:text-dark-green hover:bg-light-blue transform hover:-translate-y-1 hover:scale-105 hover:text-dark-green
+    @apply bg-custom-gray text-xs px-3 py-2 focus:outline-none rounded-full mx-4 mb-2 transition duration-500 ease-in-out hover:text-dark-green hover:bg-light-blue transform hover:-translate-y-1 hover:scale-105 hover:text-dark-green
 
 }
 

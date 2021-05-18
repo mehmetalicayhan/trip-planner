@@ -18,8 +18,8 @@ class Login extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
-        const { dispatch } = this.props;
-        const { email, password } = this.state;
+        const {dispatch} = this.props;
+        const {email, password} = this.state;
         dispatch(login(email, password));
     }
     handleChange = e => {
@@ -29,10 +29,10 @@ class Login extends Component {
     }
 
     render() {
-        const { isAuthenticated, error, errorMessage } = this.props;
-        if (isAuthenticated)
-            this.props.history.push('/');
-
+        const {isAuthenticated, error, errorMessage} = this.props;
+        if (isAuthenticated) {
+            this.props.history.push(`/user/${JSON.parse(localStorage.getItem("user")).id}`);
+        }
         return (
             <div className={styles.authContainer}>
                 <div className={styles.logoSide}>
@@ -84,7 +84,7 @@ class Login extends Component {
 }
 
 const mapStateToProps = state => {
-    const { isAuthenticated, error, errorMessage, user } = state.auth;
+    const {isAuthenticated, error, errorMessage, user} = state.auth;
     return {
         isAuthenticated,
         error,

@@ -14,7 +14,7 @@ class AddTripSidebar extends Component {
             tripStartDate: "",
             tripEndDate: "",
             privacy: "",
-            redirect:false
+            redirect: false
         };
     }
 
@@ -34,7 +34,7 @@ class AddTripSidebar extends Component {
                 tripRequest
             )
             .then(() => {
-                this.setState({redirect:true});
+                this.setState({redirect: true});
             })
             .catch((errors) => {
                 console.log(errors);
@@ -49,7 +49,7 @@ class AddTripSidebar extends Component {
     render() {
         const redirect = this.state.redirect;
         if (redirect) {
-            return <Redirect to="/" />
+            return <Redirect to={`/user/${JSON.parse(localStorage.getItem("user")).id}`}/>
         }
         return (
 

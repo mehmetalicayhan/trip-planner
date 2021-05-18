@@ -19,7 +19,7 @@ class TravelCard extends Component {
     render() {
         return (
             <div>
-                <Link to={`/step/${this.props.trip.id}`}>
+                <Link to={`/user/${this.props.userId}/step/${this.props.trip.id}`}>
                     <div className="bg-custom-gray hover:bg-light-blue cursor-pointer flex flex-col mb-4 p-2">
                         <div className="flex mx-2 items-center font-bold">
                             <div>

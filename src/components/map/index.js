@@ -12,16 +12,31 @@ import {colorArray} from "./utilities/Colors";
 import "./index.module.css";
 import {AddStep} from "../icons/index";
 import BlogPopup from "./blog-popup";
+
 export const MAPBOX_TOKEN =
     "pk.eyJ1IjoibWVobWV0YWxpY3lobm4iLCJhIjoiY2tucndzYWFwMGpkcDJ1cXQ1aWNldW9icSJ9.5Me5o9d5x1DUfGtYSipbiw";
 
-const Map = () => {
+const Map = (props) => {
 
     const [viewport, setViewport] = useState({
         latitude: 39.1667,
         longitude: 35.6667,
         zoom: 5
     });
+
+    const [isMyProfile, setMyProfile] = useState(false);
+
+    const checkUser = () => {
+        axios.get(`https://trip-planner-mm.herokuapp.com/users/${props.userId}`).then((res) => {
+            const localStorageUserId = JSON.parse(localStorage.getItem("user")).id;
+            if (localStorageUserId === res.data.id) {
+                setMyProfile(true)
+            }
+        })
+            .catch((errors) => {
+                console.log(errors);
+            });
+    }
 
 
     const [allLocs, setAllLocs] = useState([]);
@@ -42,7 +57,7 @@ const Map = () => {
 
 
     const getTripCoordinates = () => {
-        axios.get(`https://trip-planner-mm.herokuapp.com/trips/coordinates`).then((res) => {
+        axios.get(`https://trip-planner-mm.herokuapp.com/trips/coordinates/user/${props.userId}`).then((res) => {
             const tripSteps = res.data[0]?.tripSteps;
             tripSteps && tripSteps.forEach((loc, i) => {
                 setAllLocs(l => [...l, loc])
@@ -60,6 +75,7 @@ const Map = () => {
     useEffect(() => {
         getTripCoordinates();
         getAllSteps();
+        checkUser();
     }, [])
     const handleGeocoderViewportChange = useCallback(
         (newViewport) => {
@@ -74,7 +90,7 @@ const Map = () => {
     );
 
     const clicked = (e) => {
-        if (window.location.pathname.split("/")[1] === "step") {
+        if (window.location.pathname.split("/")[3] === "step") {
             const lng = e.lngLat[0];
             const lat = e.lngLat[1];
 
@@ -89,7 +105,7 @@ const Map = () => {
     return (
         <div style={{height: "100vh"}}>
             <MapGL
-                style={{cursor: window.location.pathname.split("/")[1] === "step" && "cell"}}
+                style={{cursor: window.location.pathname.split("/")[3] === "step" && "cell"}}
                 ref={mapRef}
                 {...viewport}
                 width="100%"
@@ -111,7 +127,7 @@ const Map = () => {
                         onClose={setPopupInfo}
                         className="z-30 w-1/3"
                     >
-                        <BlogPopup step={popupInfo}/>
+                        <BlogPopup isMyProfile={isMyProfile} step={popupInfo}/>
                     </Popup>
                 )}
 
@@ -130,7 +146,7 @@ const Map = () => {
                     })*/
                 }
 
-                {window.location.pathname.split("/")[1] === "step" &&
+                {window.location.pathname.split("/")[3] === "step" &&
                 <Marker latitude={markerLatitude} longitude={markerLongitude}>
                     <AddStep width={26} height={26} style={{color: "blue"}}/>
                 </Marker>

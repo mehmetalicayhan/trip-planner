@@ -7,7 +7,6 @@ import firebase from "../../../firebase";
 const CreateBlog = (props) => {
 
 
-
         const [value, setValue] = useState("Hello World")
         const [redirect, setRedirect] = useState(false);
         const [imageUrls, setImageUrls] = useState([]);
@@ -50,21 +49,21 @@ const CreateBlog = (props) => {
 
         }
 
-    useEffect(() => {
-        getImagesById();
-    }, [])
+        useEffect(() => {
+            getImagesById();
+        }, [])
         const copyImageSrc = (img) => {
             navigator.clipboard.writeText(img);
         }
 
         return (
             <div className="w-full h-screen flex flex-col py-2">
-                {redirect && <Redirect to="/"/>}
+                {redirect && <Redirect to={`/user/${JSON.parse(localStorage.getItem("user")).id}`}/>}
                 <div className="flex">
                     {
                         imageUrls.map((item, index) => {
-                            console.log(item);
-                            return <img className="mx-2 overflow-x-scroll cursor-pointer" alt={item.name} onClick={() => copyImageSrc(item)} src={item} key={index} width={200} height={200}/>
+                            return <img className="mx-2 overflow-x-scroll cursor-pointer" alt={item.name}
+                                        onClick={() => copyImageSrc(item)} src={item} key={index} width={200} height={200}/>
                         })
                     }
                 </div>

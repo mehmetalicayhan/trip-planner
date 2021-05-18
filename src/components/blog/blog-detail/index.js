@@ -6,7 +6,6 @@ const BlogDetail = (props) => {
     const [blog, setBlog] = useState({})
     const getBlogById = () => {
         axios.get(`https://trip-planner-mm.herokuapp.com/blogs?stepId=${props.match.params.id}`).then((res) => {
-            console.log(res.data);
             setBlog(res.data);
         })
     }

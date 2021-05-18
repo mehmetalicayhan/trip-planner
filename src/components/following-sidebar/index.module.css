@@ -1,0 +1,14 @@
+.profilePhoto{
+    @apply
+    w-14 h-14 rounded-full p-3 bg-white my-4
+}
+
+
+
+.followerButton{
+@apply text-xs bg-white mx-1 rounded px-2 py-1 border border-black mb-2
+}
+
+.createTrip{
+    @apply bg-indigo-900 text-white p-2 rounded w-1/2 self-center my-2
+}

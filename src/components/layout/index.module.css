@@ -5,7 +5,7 @@
 
 .navbar{
     @apply
-    bg-dark-green h-12 flex items-center justify-between
+    bg-dark-green h-12 flex items-center justify-between sticky top-0 z-50
 }
 
 .logo{
@@ -15,5 +15,5 @@
 
 .search{
     @apply
-    w-1/6 h-8 border p-3 rounded border-gray-300 outline-none placeholder-gray-400 mx-2
+    w-56 border border-custom-gray outline-none placeholder-custom-gray  p-2 absolute top-1 rounded focus:outline-none
 }
