@@ -45,8 +45,6 @@ const CreateBlog = (props) => {
                 })
 
             });
-
-
         }
 
         useEffect(() => {

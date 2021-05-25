@@ -11,10 +11,12 @@ import StepSidebar from "../step-sidebar";
 import {logout} from "../../actions/authAction";
 import axios from "axios";
 import FollowingSidebar from "../following-sidebar";
+import SvgShowMap from "../icons/ShowMap";
 
 const Index = (props) => {
     const [filteredData, setFilteredData] = useState([]);
     const [term, setTerm] = useState("");
+    const [showMap, setShowMap] = useState(true);
 
     const search = (term) => {
         setTerm(term);
@@ -25,6 +27,11 @@ const Index = (props) => {
                 if (term === "")
                     setFilteredData([]);
             });
+    }
+
+    const handleShowMap = () => {
+        console.log(showMap)
+        setShowMap(!showMap);
     }
 
 
@@ -55,31 +62,37 @@ const Index = (props) => {
 
                 </div>
 
-
-                <button className="mx-3" onClick={logout}><img src={LogoutSVG} width={22} height={22} alt=""/></button>
+                <div className="flex justify-center items-center">
+                    <button onClick={handleShowMap} className="focus:outline-none"><SvgShowMap
+                        width={24} height={24}/></button>
+                    <button className="mx-3" onClick={logout}><img src={LogoutSVG} width={22} height={22} alt=""/>
+                    </button>
+                </div>
 
             </div>
 
             <div className="flex h-screen">
-                <div className="sm:w-1/4 w-full  overflow-y-scroll">
-                    {props.type === 'Main' &&
+                <div className={showMap ? "sm:w-1/4 w-full  overflow-y-scroll" : "none"}>
+
+                    {(showMap && props.type === 'Main') &&
                     <MainSidebar id={props.match.params.id}/>
                     }
-                    {props.type === 'Follower' &&
+                    {(showMap && props.type === 'Follower') &&
                     <FollowerSidebar id={props.match.params.id}/>
                     }
-                    {props.type === 'Following' &&
+                    {(showMap && props.type === 'Following') &&
                     <FollowingSidebar id={props.match.params.id}/>
                     }
-                    {props.type === 'AddTrip' &&
+                    {(showMap && props.type === 'AddTrip') &&
                     <AddTripSidebar id={props.match.params.id}/>
                     }
-                    {props.type === 'Step' &&
+                    {(showMap && props.type === 'Step') &&
                     <StepSidebar userId={props.match.params.userId} tripId={props.match.params.tripId}/>
                         // Show All Users
                     }
                 </div>
-                <div className="sm:flex-auto none"><Map userId={props.match.params.id || props.match.params.userId}/>
+                <div className={!showMap ? "flex-auto" : "sm:flex-auto none"}><Map
+                    userId={props.match.params.id || props.match.params.userId}/>
                 </div>
             </div>
         </div>

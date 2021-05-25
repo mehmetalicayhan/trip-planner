@@ -34,7 +34,7 @@
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject",
-    "svgr": "svgr icons -d ./src/components/icons --icon --replace-attr-values \"#fff=currentColor\""
+    "svgr": "svgr icons  -d ./src/components/icons/ --icon --replace-attr-values \"#fff=currentColor\""
   },
   "eslintConfig": {
     "extends": [
