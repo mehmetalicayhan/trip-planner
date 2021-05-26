@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import styles from "../login/index.module.css";
 import axios from "axios";
 import TravelImage from "../login/travel.jpeg";
+import {Link} from "react-router-dom";
 
 class Register extends Component {
     constructor(props) {
@@ -112,6 +113,10 @@ class Register extends Component {
                                 onChange={this.handleChange}
 
                             />
+                        </div>
+                        <div className={styles.formRow}>
+                            <div className="text-sm">Üye misin? <Link className="hover:text-red-400 hover:underline cursor-pointer" to="/account/login">Giriş Yap</Link>
+                            </div>
                         </div>
 
                         <div className={styles.formRow}>

@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {login, logout} from "../../actions/authAction";
 import TravelImage from "./travel.jpeg";
 import styles from "./index.module.css";
+import {Link} from "react-router-dom";
 
 class Login extends Component {
     componentDidMount() {
@@ -71,6 +72,13 @@ class Login extends Component {
                                 <div className="text-sm hover:text-red-400 hover:underline cursor-pointer">Parolamı
                                     Unuttum
                                 </div>
+
+                            </div>
+
+                        </div>
+                        <div className="flex flex-col mt-5">
+                            <div className="text-sm">Üye değil
+                                misin? <Link className="hover:text-red-400 hover:underline cursor-pointer" to="/account/register">Kaydol</Link>
                             </div>
                         </div>
                         <div className={styles.formRow}>
